@@ -1,4 +1,6 @@
 import sys
+import os
+import time
 
 from sisi import Sisi
 from player import Player
@@ -7,16 +9,19 @@ class EgyptGame():
 	round = 1
 
 	def setup(self):
-		print("\n"+"="*80)
+		os.system('cls' if os.name == 'nt' else 'clear')
+		print("="*80)
 		print("Welcome to Sisi Fighter!")
 		print("This game is made in support of a free and democratic Egypt.")
 		print("The goal of the game is simple: defeat Sisi before he defeats you!")
-		print("="*80+"\n\n")
+		print("="*80)
+		time.sleep(10)
+		os.system('cls' if os.name == 'nt' else 'clear')
 
 		self.player = Player()
-		print("\n")
 		self.enemies = [Sisi(1), Sisi(2), Sisi(3), Sisi(4), Sisi(5), Sisi(6), Sisi(7), Sisi(8), Sisi(9), Sisi(10)]
 		self.enemy = self.getEnemy()
+		os.system('cls' if os.name == 'nt' else 'clear')
 
 	def getEnemy(self):
 		try:
@@ -43,14 +48,18 @@ class EgyptGame():
 		self.round += 1
 		self.player.health += self.enemy.experience
 		print("Good job! You defeated Sisi!".format(self.enemy))
-		print("="*80+"\n\n")
+		print("="*80)
+		time.sleep(5)
+		os.system('cls' if os.name == 'nt' else 'clear')
 		self.enemy = self.getEnemy()
 		if self.enemy == None:
 			pass
 		else:
 			print("="*80)
 			print("You're not finished yet! Incoming {}!".format(self.enemy))
-			print("="*80+"\n\n")
+			print("="*80)
+			time.sleep(6)
+			os.system('cls' if os.name == 'nt' else 'clear')
 
 	def __init__(self):
 		self.setup()
@@ -72,12 +81,16 @@ class EgyptGame():
 				print("Round results:")
 				print("{} has {}HP".format(self.player.name, self.player.health))
 				print("{} has {}HP".format(self.enemy.name, self.enemy.health))
-				print("="*80+"\n\n")
+				print("="*80)
+				time.sleep(6)
+				os.system('cls' if os.name == 'nt' else 'clear')
 
 		if self.player.health == 0:
-			print("Oh no! Sisi defeated you! How unfortunate! Better luck next time!\n")
+			print("Oh no! Sisi defeated you! How unfortunate! Better luck next time!")
 		else:
-			print("Congratulations! You defeated Sisi and liberated Egypt!\n")
+			print("Congratulations! You defeated Sisi and liberated Egypt!")
+		time.sleep(5)
+		os.system('cls' if os.name == 'nt' else 'clear')
 
 
 EgyptGame()

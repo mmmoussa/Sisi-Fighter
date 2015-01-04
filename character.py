@@ -4,8 +4,7 @@ class Character():
 	name = "Mr. Evil"
 	position = "Ruler of the Universe"
 
-	# attacks consists of a list of tuples. Each tuple holds the attack, its power, and the number to be used in the attack success randomizer
-	attacks = [("destroyed the universe", 100, 49), ("used his doomsday laser", 2, 1)]
+	# attacks consists of a list of tuples. Each tuple holds the attack, its power, and the probability of success
 
 	def __init__(self):
 		self.health = random.randint(10, 20)
@@ -16,8 +15,8 @@ class Character():
 
 	def attack(self):
 		attack = random.randint(0, len(self.attacks) - 1)
-		probabilityNum = random.randint(0, self.attacks[attack][2])
-		if probabilityNum == 0:
+		probabilityNum = random.randint(0, 99)
+		if self.attacks[attack][2] > probabilityNum:
 			print("{} {}!".format(self.name, self.attacks[attack][0]))
 			return self.attacks[attack][1]
 		else:

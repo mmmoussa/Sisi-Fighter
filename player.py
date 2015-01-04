@@ -2,14 +2,14 @@ import random
 from character import Character
 
 class Player(Character):
-	attacks = [("assassinate the enemy", 10, 19),
-			   ("protest", 3, 1),
-			   ("spread the truth", 1, 0),
-			   ("rest", -2, 0)]
+	attacks = [("assassinate the enemy", 10, 5),
+			   ("protest", 3, 60),
+			   ("spread the truth", 1, 80),
+			   ("rest", -2, 90)]
 
 	def __init__(self):
 		self.name = input("Your name: ")
-		self.health = 15
+		self.health = 10
 
 	def __str__(self):
 		return "{}, {}HP".format(self.name, self.health)
@@ -32,8 +32,8 @@ class Player(Character):
 				print("That choice wasn't valid.\n")
 
 		print("\nYou are choosing to {}".format(self.attacks[choice - 1][0]))
-		failNum = random.randint(0, self.attacks[choice - 1][2])
-		if failNum == 0:
+		failNum = random.randint(0, 99)
+		if self.attacks[choice - 1][2] > failNum:
 			print("Your attack succeeded!")
 			return self.attacks[choice - 1][1]
 		else:
