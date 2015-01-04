@@ -1,4 +1,5 @@
 import random
+import sys
 from character import Character
 
 class Player(Character):
@@ -8,7 +9,11 @@ class Player(Character):
 			   ("rest", -2, 90)]
 
 	def __init__(self):
-		self.name = input("Your name: ")
+		try:
+			self.name = input("Your name: ")
+		except KeyboardInterrupt:
+			print("Program interrupted.\n")
+			sys.exit()
 		self.health = 10
 
 	def __str__(self):
@@ -28,6 +33,9 @@ class Player(Character):
 					break
 				except:
 					print("There is no attack for that number.\n")
+			except KeyboardInterrupt:
+				print("Program interrupted.\n")
+				sys.exit()
 			except:
 				print("That choice wasn't valid.\n")
 
