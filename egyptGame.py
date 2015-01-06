@@ -1,6 +1,5 @@
 import sys
 import os
-import time
 
 from sisi import Sisi
 from player import Player
