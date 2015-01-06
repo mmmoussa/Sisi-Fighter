@@ -1,6 +1,5 @@
 import sys
 import os
-import time
 
 from sisi import Sisi
 from player import Player
@@ -15,7 +14,11 @@ class EgyptGame():
 		print("This game is made in support of a free and democratic Egypt.")
 		print("The goal of the game is simple: defeat Sisi before he defeats you!")
 		print("="*80)
-		time.sleep(10)
+		try:
+			input("Press 'return' to continue:")
+		except KeyboardInterrupt:
+			print("\n\nProgram interrupted.\n")
+			sys.exit()
 		os.system('cls' if os.name == 'nt' else 'clear')
 
 		self.player = Player()
@@ -49,7 +52,11 @@ class EgyptGame():
 		self.player.health += self.enemy.experience
 		print("Good job! You defeated Sisi!".format(self.enemy))
 		print("="*80)
-		time.sleep(5)
+		try:
+			input("Press 'return' to continue:")
+		except KeyboardInterrupt:
+			print("\n\nProgram interrupted.\n")
+			sys.exit()
 		os.system('cls' if os.name == 'nt' else 'clear')
 		self.enemy = self.getEnemy()
 		if self.enemy == None:
@@ -58,7 +65,11 @@ class EgyptGame():
 			print("="*80)
 			print("You're not finished yet! Incoming {}!".format(self.enemy))
 			print("="*80)
-			time.sleep(6)
+			try:
+				input("Press 'return' to continue:")
+			except KeyboardInterrupt:
+				print("\n\nProgram interrupted.\n")
+				sys.exit()
 			os.system('cls' if os.name == 'nt' else 'clear')
 
 	def __init__(self):
@@ -82,14 +93,22 @@ class EgyptGame():
 				print("{} has {}HP".format(self.player.name, self.player.health))
 				print("{} has {}HP".format(self.enemy.name, self.enemy.health))
 				print("="*80)
-				time.sleep(6)
+				try:
+					input("Press 'return' to continue:")
+				except KeyboardInterrupt:
+					print("\n\nProgram interrupted.\n")
+					sys.exit()
 				os.system('cls' if os.name == 'nt' else 'clear')
 
 		if self.player.health == 0:
 			print("Oh no! Sisi defeated you! How unfortunate! Better luck next time!")
 		else:
 			print("Congratulations! You defeated Sisi and liberated Egypt!")
-		time.sleep(5)
+		try:
+			input("Press 'return' to continue:")
+		except KeyboardInterrupt:
+			print("\n\nProgram interrupted.\n")
+			sys.exit()
 		os.system('cls' if os.name == 'nt' else 'clear')
 
 
