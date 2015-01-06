@@ -12,7 +12,7 @@ class Player(Character):
 		try:
 			self.name = input("Your name: ")
 		except KeyboardInterrupt:
-			print("Program interrupted.\n")
+			print("\n\nProgram interrupted.\n")
 			sys.exit()
 		self.health = 10
 
@@ -34,7 +34,7 @@ class Player(Character):
 				except:
 					print("There is no attack for that number.\n")
 			except KeyboardInterrupt:
-				print("Program interrupted.\n")
+				print("\n\nProgram interrupted.\n")
 				sys.exit()
 			except:
 				print("That choice wasn't valid.\n")
