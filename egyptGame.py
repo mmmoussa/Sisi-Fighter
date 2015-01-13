@@ -111,5 +111,3 @@ class EgyptGame():
 			sys.exit()
 		os.system('cls' if os.name == 'nt' else 'clear')
 
-
-EgyptGame()

@@ -1,24 +1,29 @@
-import wx
+from tkinter import *
+from egyptGame import EgyptGame
 
-class interface(wx.Frame):
+# --- Setting up window ---
+root = Tk()
+root.minsize(600,300)
+root.geometry("600x300")
+rTitle = root.title("Sisi Game")
 
-	def __init__(self, parent, id):
-		wx.Frame.__init__(self, parent, id, "Sisi game", size=(400,300))
-		panel = wx.Panel(self)
+# --- Window Menu ---
+menu = Menu(root)
+root.config(menu=menu)
+fileMenu = Menu(menu)
+menu.add_cascade(label="File", menu=fileMenu)
+fileMenu.add_command(label="Start game", command=EgyptGame)
+fileMenu.add_separator()
+fileMenu.add_command(label="Exit", command=root.quit)
 
-		status = self.CreateStatusBar()
-		menubar = wx.MenuBar()
-		firstMenu = wx.Menu()
-		secondMenu = wx.Menu()
-		firstMenu.Append(wx.NewId(), "Play game", "Click to play the game")
-		firstMenu.Append(wx.NewId(), "Show credits", "Click to show credits")
-		secondMenu.Append(wx.NewId(), "Exit", "Click to exit")
-		menubar.Append(firstMenu, "Options")
-		menubar.Append(secondMenu, "Exit")
-		self.SetMenuBar(menubar)
+# --- Character info display ---
+characterFrame = Frame(root, bg="blue") # Character info frame
+characterFrame.pack(side=TOP, fill=X)
+playerLabel = Label(characterFrame, text="This is the player!", justify=LEFT)
+vLabel = Label(characterFrame, text=" vs. ")
+enemyLabel = Label(characterFrame, text="This is the enemy!", justify=RIGHT)
+playerLabel.pack(side=LEFT)
+vLabel.pack(fill=X, side=LEFT)
+enemyLabel.pack(side=LEFT)
 
-if __name__=="__main__":
-	app = wx.PySimpleApp()
-	frame = interface(parent=None, id=-1)
-	frame.Show()
-	app.MainLoop()
+root.mainloop()
