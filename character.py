@@ -1,4 +1,5 @@
 import random
+from tkinter import *
 
 class Character():
 	name = "Mr. Evil"
@@ -13,14 +14,14 @@ class Character():
 	def __str__(self):
 		return "{}, {}, {}HP and {}XP".format(self.name, self.position, self.health, self.experience)
 
-	def attack(self):
+	def attack(self, label):
 		attack = random.randint(0, len(self.attacks) - 1)
 		probabilityNum = random.randint(0, 99)
 		if self.attacks[attack][2] > probabilityNum:
-			print("{} {}!".format(self.name, self.attacks[attack][0]))
+			label.config(text="It is {}'s turn to attack:\n{} {}!".format(self.name, self.name, self.attacks[attack][0]))
 			return self.attacks[attack][1]
 		else:
-			print("{} would've {}, but the plan failed.".format(self.name, self.attacks[attack][0]))
+			label.config(text="It is {}'s turn to attack:\n{} would've {}, but the plan failed.".format(self.name, self.name, self.attacks[attack][0]))
 			return 0
 
 

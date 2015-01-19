@@ -1,29 +1,126 @@
 from tkinter import *
+from tkinter import messagebox
 from egyptGame import EgyptGame
+
+class egyptGameGUI():
+
+	def __init__(self, master):		
+
+		# --- Window Menu ---
+		menu = Menu(master)
+		master.config(menu=menu)
+		fileMenu = Menu(menu)
+		menu.add_cascade(label="File", menu=fileMenu)
+		fileMenu.add_command(label="Start game", command=self.newGame)
+		fileMenu.add_separator()
+		fileMenu.add_command(label="About", command=self.about)
+		fileMenu.add_separator()
+		fileMenu.add_command(label="Exit", command=root.quit)
+
+		# --- Character info display ---
+		self.characterFrame = Frame(master, bd=2, relief=SOLID, height=50, bg="black")
+		self.characterFrame.pack(fill=X)
+		self.playerLabel = Label(self.characterFrame, text="Player", anchor=E, bg="black", fg="white")
+		self.vLabel = Label(self.characterFrame, text=" vs. ", bg="black", fg="white")
+		self.enemyLabel = Label(self.characterFrame, text="Enemy", anchor=W, bg="black", fg="white")
+		self.playerLabel.grid(row=0, column=0, sticky=W)
+		self.vLabel.grid(row=0, column=1)
+		self.enemyLabel.grid(row=0, column=2, sticky=E)
+		self.characterFrame.grid_columnconfigure(1, weight=2)
+
+		# --- Main info display ---
+		self.mainFrame = Frame(master)
+		self.mainFrame.pack(fill=BOTH, expand=1)
+		self.mainMessage = Label(self.mainFrame, justify=LEFT, anchor=W)
+		self.mainMessage.pack(side=TOP, fill=X)
+
+		# --- Action button location ---
+		self.actionFrame = Frame(master, height=30)
+		self.actionFrame.pack(fill=X)
+
+		# --- Buttons that will be needed ---
+		self.newGameButton = Button(self.actionFrame, text="Continue", command=self.startGame)
+		self.playerNextButton = Button(self.actionFrame, text="Continue", command=self.enemyTurn)
+		self.enemyNextButton = Button(self.actionFrame, text="Continue", command=self.playerTurn)
+		self.endRoundButton = Button(self.actionFrame, text="Continue", command=self.roundEnd)
+		self.newEnemyButton = Button(self.actionFrame, text="Continue", command=self.newEnemy)
+		self.newRoundButton = Button(self.actionFrame, text="Continue", command=self.playerTurn)
+
+	# --- About messagebox ---
+	def about(self):
+		messagebox.showinfo(title="About", message="This game is created by Mohamed Moussa in support of a free and democratic Egypt.")
+
+	# --- Running game ---
+	def newGame(self):
+		self.game = EgyptGame()
+		self.game.setup(self.mainMessage)
+		self.updateCharacters()
+		self.newGameButton.pack(side=RIGHT, padx=5)
+
+	def startGame(self):
+		self.newGameButton.pack_forget()
+		self.mainMessage.config(text="")
+		self.playerTurn()
+
+	def playerTurn(self):
+		try:
+			self.newRoundButton.pack_forget()
+		except:
+			pass
+		try:
+			self.enemyNextButton.pack_forget()
+		except:
+			pass
+		if self.game.enemy.health == 0:
+			self.game.roundEnd()
+		else:
+			self.game.playerTurn(self.mainMessage)
+			self.updateCharacters()
+			if self.game.enemy.health == 0:
+				self.endRoundButton.pack(side=RIGHT, padx=5)
+			else:
+				self.playerNextButton.pack(side=RIGHT, padx=5)
+
+	def enemyTurn(self):
+		self.playerNextButton.pack_forget()
+		self.game.enemyTurn(self.mainMessage)
+		self.updateCharacters()
+		if self.game.player.health == 0:
+			self.endRoundButton.pack(side=RIGHT, padx=5)
+		else:
+			self.enemyNextButton.pack(side=RIGHT, padx=5)
+
+	def roundEnd(self):
+		self.endRoundButton.pack_forget()
+		if self.game.player.health == 0:
+			self.mainMessage.config(text="Oh no! Sisi defeated you! How unfortunate! Better luck next time!")
+		elif self.game.enemy == None:
+			self.mainMessage.config(text="Congratulations! You defeated Sisi and liberated Egypt!")
+		elif self.game.enemy.health == 0:
+			self.game.roundEnd(self.mainMessage)
+			self.newEnemyButton.pack(side=RIGHT, padx=5)
+		else:
+			pass
+
+	def newEnemy(self):
+		self.newEnemyButton.pack_forget()	
+		self.game.newEnemy(self.mainMessage)
+		if self.game.gameEnded == True:
+			pass
+		else:
+			self.updateCharacters()
+			self.newRoundButton.pack(side=RIGHT, padx=5)
+
+	def updateCharacters(self):
+		self.playerLabel.config(text=self.game.player)
+		self.enemyLabel.config(text=self.game.enemy)
 
 # --- Setting up window ---
 root = Tk()
 root.minsize(600,300)
 root.geometry("600x300")
-rTitle = root.title("Sisi Game")
+rTitle = root.title("Sisi Fighter")
 
-# --- Window Menu ---
-menu = Menu(root)
-root.config(menu=menu)
-fileMenu = Menu(menu)
-menu.add_cascade(label="File", menu=fileMenu)
-fileMenu.add_command(label="Start game", command=EgyptGame)
-fileMenu.add_separator()
-fileMenu.add_command(label="Exit", command=root.quit)
-
-# --- Character info display ---
-characterFrame = Frame(root, bg="blue") # Character info frame
-characterFrame.pack(side=TOP, fill=X)
-playerLabel = Label(characterFrame, text="This is the player!", justify=LEFT)
-vLabel = Label(characterFrame, text=" vs. ")
-enemyLabel = Label(characterFrame, text="This is the enemy!", justify=RIGHT)
-playerLabel.pack(side=LEFT)
-vLabel.pack(fill=X, side=LEFT)
-enemyLabel.pack(side=LEFT)
+egyptGameGUI(root)
 
 root.mainloop()
