@@ -11,32 +11,32 @@ class Player(Character):
 			   ("spread the truth", 1, 80),
 			   ("rest", -2, 90)]
 
+	attackSuccess = False
+
 	def __init__(self):
 		self.health = 10
 
 	def __str__(self):
 		return "{}, {}HP".format(self.name, self.health)
 
-	def attack(self, label):
+	def listAttacks(self, label, frame):
 		message = "It is your turn to attack. You can:\n"
-		count = 1
-		for attack in self.attacks:
-			message += ("    {}. {}\n".format(count, attack[0].title()))
-			count += 1
 		label.config(text=message)
-		while True:
-			try:
-				choice = int(input("Choose the attack by number: "))
-				try:
-					throwaway = self.attacks[choice - 1]
-					break
-				except:
-					tkinter.messagebox.showinfo("Invalid choice", "There is no attack for that number.")
-			except KeyboardInterrupt:
-				print("\n\nProgram interrupted.\n")
-				sys.exit()
-			except:
-				tkinter.messagebox.showinfo("Invalid choice", "That choice wasn't valid.")
+		count = 1
+		self.radioChoice = IntVar()
+		self.radioChoice.set(1)
+		self.radioButtonsList = []
+		for attack in self.attacks:
+			b = Radiobutton(frame, text=attack[0].title(), variable=self.radioChoice, value=count)
+			b.pack(side=TOP, anchor=W, padx=10)
+			self.radioButtonsList.append(b)
+			count += 1
+		
+	def attackResult(self, label):
+		for item in self.radioButtonsList:
+			item.pack_forget()
+
+		choice = self.radioChoice.get()
 
 		message="You are choosing to {}.\n".format(self.attacks[choice - 1][0])
 		failNum = random.randint(0, 99)
@@ -47,5 +47,7 @@ class Player(Character):
 		else:
 			message += "Your attack failed."
 			label.config(text=message)	
-			return 0	
+			return 0
+		
+		
 

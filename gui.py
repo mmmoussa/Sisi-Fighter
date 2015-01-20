@@ -39,7 +39,10 @@ class egyptGameGUI():
 		self.actionFrame.pack(fill=X)
 
 		# --- Buttons that will be needed ---
-		self.newGameButton = Button(self.actionFrame, text="Continue", command=self.startGame)
+		self.newGameButton = Button(self.actionFrame, text="Continue", command=self.choosePlayer)
+		self.submitNameButton = Button(self.actionFrame, text="Submit", command=self.confirmPlayer)
+		self.startGameButton = Button(self.actionFrame, text="Continue", command=self.startGame)
+		self.submitAttackButton = Button(self.actionFrame, text="Submit", command=self.playerTurnResult)
 		self.playerNextButton = Button(self.actionFrame, text="Continue", command=self.enemyTurn)
 		self.enemyNextButton = Button(self.actionFrame, text="Continue", command=self.playerTurn)
 		self.endRoundButton = Button(self.actionFrame, text="Continue", command=self.roundEnd)
@@ -54,11 +57,32 @@ class egyptGameGUI():
 	def newGame(self):
 		self.game = EgyptGame()
 		self.game.setup(self.mainMessage)
-		self.updateCharacters()
 		self.newGameButton.pack(side=RIGHT, padx=5)
 
-	def startGame(self):
+	def choosePlayer(self):
 		self.newGameButton.pack_forget()
+		self.mainMessage.pack_forget()
+		self.nameLabel = Label(self.mainFrame, text="Name:", justify=LEFT)
+		self.nameLabel.pack(side=LEFT, anchor=N)
+		self.playerName = StringVar()
+		self.nameEntry = Entry(self.mainFrame, textvariable=self.playerName)
+		self.nameEntry.pack(side=LEFT, anchor=N)
+		self.submitNameButton.pack(side=RIGHT, padx=5)
+
+	def confirmPlayer(self):
+		self.nameLabel.pack_forget()
+		self.nameEntry.pack_forget()
+		self.submitNameButton.pack_forget()
+		self.mainMessage.pack(side=TOP, fill=X)
+		self.game.player.name = self.playerName.get()
+		if self.game.player.name == "":
+			self.game.player.name = "Too lazy to enter name"
+		self.mainMessage.config(text='Your name is "{}".'.format(self.game.player.name))
+		self.startGameButton.pack(side=RIGHT, padx=5)
+
+	def startGame(self):
+		self.startGameButton.pack_forget()
+		self.updateCharacters()
 		self.mainMessage.config(text="")
 		self.playerTurn()
 
@@ -71,15 +95,21 @@ class egyptGameGUI():
 			self.enemyNextButton.pack_forget()
 		except:
 			pass
+
 		if self.game.enemy.health == 0:
 			self.game.roundEnd()
 		else:
-			self.game.playerTurn(self.mainMessage)
-			self.updateCharacters()
-			if self.game.enemy.health == 0:
-				self.endRoundButton.pack(side=RIGHT, padx=5)
-			else:
-				self.playerNextButton.pack(side=RIGHT, padx=5)
+			self.game.playerAttackChoice(self.mainMessage, self.mainFrame)
+			self.submitAttackButton.pack(side=RIGHT, padx=5)
+
+	def playerTurnResult(self):
+		self.submitAttackButton.pack_forget()
+		self.game.playerAttackResult(self.mainMessage)
+		self.updateCharacters()
+		if self.game.enemy.health == 0:
+			self.endRoundButton.pack(side=RIGHT, padx=5)
+		else:
+			self.playerNextButton.pack(side=RIGHT, padx=5)
 
 	def enemyTurn(self):
 		self.playerNextButton.pack_forget()

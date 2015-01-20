@@ -21,14 +21,17 @@ class EgyptGame():
 		except:
 			return None
 
-	def playerTurn(self, label):
-		damage = self.player.attack(label)
+	def playerAttackChoice(self, label, frame):
+		self.player.listAttacks(label, frame)
+
+	def playerAttackResult(self, label):
+		damage = self.player.attackResult(label)
 		if damage != -2:
 			self.enemy.health -= damage
 		else:
 			self.player.health += 2
 		if self.enemy.health < 0:
-			self.enemy.health = 0
+			self.enemy.health = 0		
 
 	def enemyTurn(self, label):
 		damage = self.enemy.attack(label)
@@ -43,28 +46,9 @@ class EgyptGame():
 	def newEnemy(self, label):
 		self.enemy = self.getEnemy()
 		if self.enemy == None:
-			label.config(text="It seems there are no more {}s".format(self.enemy.name))
+			label.config(text="It seems there are no more enemies.")
 			self.gameEnded = True
 		else:
 			label.config(text="You're not finished yet! Incoming {}!".format(self.enemy))
 			self.round += 1
-
-	def __init__(self):
-		'''
-		while self.player.health > 0 and (self.enemy):
-			print("Battle {}: {} vs. {}".format(self.round, self.player, self.enemy))
-			print("{}'s turn:".format(self.player.name))
-			self.playerTurn()
-			if self.enemy.health == 0:
-				self.roundEnd()
-				continue
-			else:
-				print("{}'s turn:".format(self.enemy.name))
-				self.enemyTurn()
-				print("-"*80)
-				print("Round results:")
-				print("{} has {}HP".format(self.player.name, self.player.health))
-				print("{} has {}HP".format(self.enemy.name, self.enemy.health))
-				print("="*80)
-		'''
 
