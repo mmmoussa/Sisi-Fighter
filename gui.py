@@ -38,6 +38,10 @@ class egyptGameGUI():
 		self.actionFrame = Frame(master, height=30)
 		self.actionFrame.pack(fill=X)
 
+		# --- Initial start button ---
+		self.startNewGame = Button(self.actionFrame, text="Start Game", command=self.newGame)
+		self.startNewGame.pack(side=RIGHT, padx=5)
+
 		# --- Buttons that will be needed ---
 		self.newGameButton = Button(self.actionFrame, text="Continue", command=self.choosePlayer)
 		self.submitNameButton = Button(self.actionFrame, text="Submit", command=self.confirmPlayer)
@@ -55,12 +59,19 @@ class egyptGameGUI():
 
 	# --- Running game ---
 	def newGame(self):
+		for widget in self.actionFrame.children.values():
+			widget.pack_forget()
+		for widget in self.mainFrame.children.values():
+			widget.pack_forget()
+		self.mainMessage.pack(side=TOP, fill=X)
+
 		self.game = EgyptGame()
 		self.game.setup(self.mainMessage)
 		self.newGameButton.pack(side=RIGHT, padx=5)
 
 	def choosePlayer(self):
 		self.newGameButton.pack_forget()
+		self.mainMessage.config(text="")
 		self.mainMessage.pack_forget()
 		self.nameLabel = Label(self.mainFrame, text="Name:", justify=LEFT)
 		self.nameLabel.pack(side=LEFT, anchor=N)
@@ -77,6 +88,7 @@ class egyptGameGUI():
 		self.game.player.name = self.playerName.get()
 		if self.game.player.name == "":
 			self.game.player.name = "Too lazy to enter name"
+			messagebox.showinfo(title="So lazy!", message="You're so lazy you didn't even enter a name! Well, I've given you one.")
 		self.mainMessage.config(text='Your name is "{}".'.format(self.game.player.name))
 		self.startGameButton.pack(side=RIGHT, padx=5)
 
@@ -121,11 +133,17 @@ class egyptGameGUI():
 			self.enemyNextButton.pack(side=RIGHT, padx=5)
 
 	def roundEnd(self):
-		self.endRoundButton.pack_forget()
+		try:
+			self.endRoundButton.pack_forget()
+		except:
+			pass
+
 		if self.game.player.health == 0:
 			self.mainMessage.config(text="Oh no! Sisi defeated you! How unfortunate! Better luck next time!")
-		elif self.game.enemy == None:
+			self.startNewGame.pack(side=RIGHT, padx=5)
+		elif self.game.gameEnded:
 			self.mainMessage.config(text="Congratulations! You defeated Sisi and liberated Egypt!")
+			self.startNewGame.pack(side=RIGHT, padx=5)
 		elif self.game.enemy.health == 0:
 			self.game.roundEnd(self.mainMessage)
 			self.newEnemyButton.pack(side=RIGHT, padx=5)
@@ -136,7 +154,7 @@ class egyptGameGUI():
 		self.newEnemyButton.pack_forget()	
 		self.game.newEnemy(self.mainMessage)
 		if self.game.gameEnded == True:
-			pass
+			self.endRoundButton.pack(side=RIGHT, padx=5)
 		else:
 			self.updateCharacters()
 			self.newRoundButton.pack(side=RIGHT, padx=5)

@@ -6,7 +6,6 @@ from player import Player
 
 class EgyptGame():
 	round = 1
-	gameEnded = False
 
 	def setup(self, label):
 		label.config(text="Welcome to Sisi Fighter!\nThis game is made in support of a free and democratic Egypt.\nThe goal of the game is simple: defeat Sisi before he defeats you!")
@@ -14,6 +13,7 @@ class EgyptGame():
 		self.player = Player()
 		self.enemies = [Sisi(1), Sisi(2), Sisi(3), Sisi(4), Sisi(5), Sisi(6), Sisi(7), Sisi(8), Sisi(9), Sisi(10)]
 		self.enemy = self.getEnemy()
+		self.gameEnded = False
 
 	def getEnemy(self):
 		try:
