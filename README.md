@@ -11,5 +11,5 @@ This game allows the player to battle the current leader of Egypt (Sisi). It fun
 - Game now restarts when completed, and can easily be exited at any time through the menu
 - Easter egg included if the user does not input a name for themself
 
-\n
+<br>
 ***This game will soon be available as an app and an exe!***
