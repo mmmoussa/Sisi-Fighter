@@ -1,4 +1,4 @@
-Sisi game
+Sisi Fighter
 =========
 
 This is a game made with python 3 and Tkinter, and then converted into OSX and Windows applications using py2app and py2exe.
