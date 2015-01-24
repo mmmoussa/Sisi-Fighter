@@ -13,4 +13,4 @@ This game allows the player to battle the current leader of Egypt (Sisi). It fun
 - Easter egg included if the user does not input a name for themself.
 
 <br>
-***This game is now available packaged for OSX and Windows! Download from [my website](mohamedmoussa.me/projects).***
+***This game is now available packaged for OSX and Windows! Download from [my website](http://mohamedmoussa.me/projects.html).***
